@@ -38,6 +38,7 @@
     border-radius: 16px;
     border: 2px solid var(--gold);
     margin-bottom: 24px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.45);
   }
   h1 {
     font-size: 28px;
@@ -63,11 +64,28 @@
     font-weight: 800;
     font-size: 16px;
     text-decoration: none;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    box-shadow: 0 4px 14px rgba(240,180,60,0.0);
+    -webkit-tap-highlight-color: transparent;
+  }
+  a.btn:hover {
+    transform: translateY(-2px) scale(1.015);
+    box-shadow: 0 10px 24px rgba(240,180,60,0.35);
+    background: #FCCC6C;
+  }
+  a.btn:active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 4px 10px rgba(240,180,60,0.25);
+    transition: transform 0.08s ease;
   }
   a.btn.secondary {
     background: transparent;
     color: var(--gold);
     border: 2px solid var(--gold);
+  }
+  a.btn.secondary:hover {
+    background: rgba(240,180,60,0.08);
+    box-shadow: 0 10px 24px rgba(240,180,60,0.18);
   }
   hr {
     border: none;
@@ -96,21 +114,52 @@
     color: var(--cream);
     opacity: 0.4;
   }
+
+  /* Entrance animation — staggered, subtle, no bounce */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: rise 0.6s ease forwards;
+    }
+    img.cover.reveal { animation-delay: 0.05s; }
+    h1.reveal { animation-delay: 0.15s; }
+    p.byline.reveal { animation-delay: 0.22s; }
+    a.btn.reveal { animation-delay: 0.30s; }
+    hr.reveal { animation-delay: 0.36s; }
+    h3.eyebrow.reveal { animation-delay: 0.40s; }
+    p.offer.reveal { animation-delay: 0.46s; }
+    iframe.reveal { animation-delay: 0.52s; }
+  }
+  @keyframes rise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Gentle glow pulse on the primary CTA — draws the eye once, doesn't loop forever */
+  @media (prefers-reduced-motion: no-preference) {
+    a.btn.primary-pulse {
+      animation: rise 0.6s ease forwards, pulseglow 2.2s ease-in-out 0.9s 2;
+    }
+  }
+  @keyframes pulseglow {
+    0%, 100% { box-shadow: 0 4px 14px rgba(240,180,60,0.0); }
+    50% { box-shadow: 0 6px 22px rgba(240,180,60,0.45); }
+  }
 </style>
 </head>
 <body>
 <main>
-  <img class="cover" src="cover.jpg" alt="TJ King" width="240" height="240">
-  <h1>OUT THE DOOR</h1>
-  <p class="byline">TJ King x Onbin</p>
+  <img class="cover reveal" src="cover.jpg" alt="TJ King" width="240" height="240">
+  <h1 class="reveal">OUT THE DOOR</h1>
+  <p class="byline reveal">TJ King x Onbin</p>
 
-  <a class="btn" href="https://distrokid.com/hyperfollow/tjkingandonbin/out-the-door?ref=release" target="_blank" rel="noopener">Stream Now</a>
+  <a class="btn primary-pulse" href="https://distrokid.com/hyperfollow/tjkingandonbin/out-the-door?ref=release" target="_blank" rel="noopener">Stream Now</a>
 
-  <hr>
+  <hr class="reveal">
 
-  <h3 class="eyebrow">Get The Stems</h3>
-  <p class="offer">The vocal stems to Out The Door, free, straight to your inbox.<br>Remix it, sample it, do what you want with it.</p>
-  <iframe src="https://embeds.beehiiv.com/8570031a-54af-4371-a670-5b5b9952bd49" style="width:100%;border:none;min-height:120px;border-radius:16px;" loading="lazy" title="Get the stems"></iframe>
+  <h3 class="eyebrow reveal">Get The Stems</h3>
+  <p class="offer reveal">The vocal stems to Out The Door, free, straight to your inbox.<br>Remix it, sample it, do what you want with it.</p>
+  <iframe class="reveal" src="https://embeds.beehiiv.com/8570031a-54af-4371-a670-5b5b9952bd49" style="width:100%;border:none;min-height:120px;border-radius:16px;" loading="lazy" title="Get the stems"></iframe>
 
   <footer>Fortunate Failures Music</footer>
 </main>
