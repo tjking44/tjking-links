@@ -46,6 +46,12 @@
   <p class="sub">Fill this out while you're uploading to DistroKid. Generates the exact
     file Claudian needs to build the landing page — no retyping, no back-and-forth.</p>
 
+  <div class="note" style="margin-top:0;margin-bottom:28px;">
+    <strong>Step 1 — cover art.</strong> Upload it here first, any device, no login:<br>
+    <a href="https://kingbiz.egnyte.com/ul/Wz2qXz1FtE" target="_blank" style="color:var(--gold);">kingbiz.egnyte.com/ul/Wz2qXz1FtE</a><br>
+    Then fill out the fields below — this is step 2.
+  </div>
+
   <label for="slug">URL slug</label>
   <input id="slug" placeholder="out-the-door">
   <div class="hint">Lowercase, dashes instead of spaces. Becomes the page's web address.</div>
@@ -64,12 +70,6 @@
 
   <button onclick="generate()">Generate & Download</button>
 
-  <div class="note">
-    <strong>Cover art isn't handled here on purpose.</strong> JSON is a bad format for
-    image files. Just drop the cover art image into the chat with Claudian same as
-    you've been doing — it'll get wired in when the page is built.
-  </div>
-
   <div id="output">
     <label>If the download doesn't fire, copy this manually:</label>
     <pre id="jsonText"></pre>
@@ -83,7 +83,7 @@ function generate() {
     song_title: document.getElementById('title').value.trim(),
     byline: document.getElementById('byline').value.trim() || 'TJ King',
     stream_url: document.getElementById('stream').value.trim() || 'PASTE_HYPERFOLLOW_LINK_HERE',
-    cover_art: 'PASTE_LOCAL_PATH_OR_SEND_IN_CHAT'
+    cover_art: 'CHECK_EGNYTE_NEW_RELEASE_COVER_ART_FOLDER'
   };
   if (!data.slug || !data.song_title) {
     alert('Slug and song title are required.');
