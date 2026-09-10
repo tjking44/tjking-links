@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Release — Landing Page Info</title>
+<meta name="robots" content="noindex">
+<style>
+  :root { --bg:#1A0A02; --cream:#E8D6B0; --gold:#F0B43C; --panel:#24100A; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--cream);
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+    display: flex; justify-content: center; padding: 48px 20px 80px; min-height: 100vh;
+  }
+  main { width: 100%; max-width: 480px; }
+  h1 { font-size: 22px; font-weight: 800; color: #FFFFFF; margin: 0 0 8px; }
+  p.sub { font-size: 14px; opacity: 0.75; margin: 0 0 32px; line-height: 1.5; }
+  label { display: block; font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--gold); margin: 20px 0 6px; }
+  input, select {
+    width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--gold);
+    background: var(--panel); color: var(--cream); font-size: 15px; font-family: inherit;
+  }
+  input::placeholder { color: #9C8060; }
+  .hint { font-size: 12px; opacity: 0.6; margin-top: 4px; }
+  button {
+    width: 100%; margin-top: 32px; padding: 16px; border-radius: 24px; border: none;
+    background: var(--gold); color: var(--bg); font-weight: 800; font-size: 16px; cursor: pointer;
+  }
+  button:hover { background: #FCCC6C; }
+  .note {
+    margin-top: 28px; padding: 16px; border: 1px dashed var(--gold); border-radius: 12px;
+    font-size: 13px; line-height: 1.6; opacity: 0.85;
+  }
+  #output { margin-top: 20px; display: none; }
+  #output pre {
+    background: var(--panel); border: 1px solid var(--gold); border-radius: 10px;
+    padding: 14px; font-size: 12px; overflow-x: auto; color: var(--cream);
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>New Release — Landing Page Info</h1>
+  <p class="sub">Fill this out while you're uploading to DistroKid. Generates the exact
+    file Claudian needs to build the landing page — no retyping, no back-and-forth.</p>
+
+  <label for="slug">URL slug</label>
+  <input id="slug" placeholder="out-the-door">
+  <div class="hint">Lowercase, dashes instead of spaces. Becomes the page's web address.</div>
+
+  <label for="title">Song title</label>
+  <input id="title" placeholder="Out The Door">
+
+  <label for="byline">Credit</label>
+  <input id="byline" placeholder="TJ King  or  TJ King x Onbin">
+  <div class="hint">Just "TJ King" for solo. "TJ King x [name]" for a feature/collab.</div>
+
+  <label for="stream">Hyperfollow / streaming link</label>
+  <input id="stream" placeholder="https://distrokid.com/hyperfollow/...">
+  <div class="hint">Leave blank if it's not generated yet — grab it from distrokid.com/hyperfollow
+    once the upload processes, come back and regenerate.</div>
+
+  <button onclick="generate()">Generate & Download</button>
+
+  <div class="note">
+    <strong>Cover art isn't handled here on purpose.</strong> JSON is a bad format for
+    image files. Just drop the cover art image into the chat with Claudian same as
+    you've been doing — it'll get wired in when the page is built.
+  </div>
+
+  <div id="output">
+    <label>If the download doesn't fire, copy this manually:</label>
+    <pre id="jsonText"></pre>
+  </div>
+</main>
+
+<script>
+function generate() {
+  const data = {
+    slug: document.getElementById('slug').value.trim(),
+    song_title: document.getElementById('title').value.trim(),
+    byline: document.getElementById('byline').value.trim() || 'TJ King',
+    stream_url: document.getElementById('stream').value.trim() || 'PASTE_HYPERFOLLOW_LINK_HERE',
+    cover_art: 'PASTE_LOCAL_PATH_OR_SEND_IN_CHAT'
+  };
+  if (!data.slug || !data.song_title) {
+    alert('Slug and song title are required.');
+    return;
+  }
+  const json = JSON.stringify(data, null, 2);
+  document.getElementById('jsonText').textContent = json;
+  document.getElementById('output').style.display = 'block';
+
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = data.slug + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
