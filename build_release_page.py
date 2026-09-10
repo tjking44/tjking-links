@@ -17,6 +17,7 @@ Release info file (JSON) — the ONLY thing that changes per release:
 Everything else (colors, layout, animations, the Join The List offer, CTA design)
 lives in _template/page_template.html and is shared across every release.
 """
+import datetime
 import json
 import shutil
 import sys
@@ -51,13 +52,24 @@ def build(release_info_path: str):
 
     # Fill template
     html = TEMPLATE.read_text()
-    byline_suffix = f", {info['byline']}" if info["byline"].lower() != "tj king" else ""
+    # "TJ King x Onbin" -> ", produced with Onbin" for the meta description sentence;
+    # solo releases ("TJ King") get no suffix at all.
+    byline = info["byline"]
+    if byline.lower() == "tj king":
+        byline_suffix = ""
+    elif " x " in byline:
+        collaborator = byline.split(" x ", 1)[1]
+        byline_suffix = f", produced with {collaborator}"
+    else:
+        byline_suffix = f", {byline}"
+
     replacements = {
         "{{SONG_TITLE}}": info["song_title"],
         "{{SONG_TITLE_UPPER}}": info["song_title"].upper(),
-        "{{BYLINE}}": info["byline"],
+        "{{BYLINE}}": byline,
         "{{BYLINE_SUFFIX}}": byline_suffix,
         "{{STREAM_URL}}": info["stream_url"],
+        "{{YEAR}}": str(datetime.date.today().year),
     }
     for token, value in replacements.items():
         html = html.replace(token, value)
