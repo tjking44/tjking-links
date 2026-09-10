@@ -70,6 +70,7 @@ def build(release_info_path: str):
         "{{BYLINE_SUFFIX}}": byline_suffix,
         "{{STREAM_URL}}": info["stream_url"],
         "{{YEAR}}": str(datetime.date.today().year),
+        "{{BUILD_VERSION}}": datetime.datetime.now().strftime("%Y%m%d%H%M%S"),
     }
     for token, value in replacements.items():
         html = html.replace(token, value)
